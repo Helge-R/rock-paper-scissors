@@ -5,7 +5,7 @@ function getComputerChoice() {
         return "Scissors";
     } else if (random > 0.33) {
         return "Paper";
-    } 
+    }
 
     return "Rock";
 }
@@ -44,7 +44,41 @@ function playRound(playerSelection, computerSelection) {
     return winner;
 }
 
-function game () {
+let buttons = document.querySelectorAll('button');
+let results = document.querySelector('#result');
+let messages = document.querySelectorAll('#result > p');
+let gameResult = document.querySelector('#game-result');
+let playerWins = 0;
+let computerWins = 0;
+
+for (btn of Array.from(buttons)) {
+    
+    btn.addEventListener('click', (e) => {
+        let playerSelection = e.target.textContent;
+        let computerSelection = getComputerChoice();
+        let winner = playRound(playerSelection, computerSelection);
+        winner = winner[0].toUpperCase() + winner.slice(1);
+        messages[0].textContent = "Player: " + playerSelection;
+        messages[1].textContent = "Computer: " + computerSelection;
+        messages[2].textContent = "Winner: " + winner;
+
+        if (winner === "Player") {
+            playerWins++;
+        } else if (winner === "Computer") {
+            computerWins++;
+        }
+
+        if (playerWins === 5 || computerWins === 5) {
+            gameResult.textContent = `The winner of the game is: ${(playerWins > computerWins) ? "You!" :
+            (computerWins > playerWins) ? "The computer!" :
+             "There is no winner!"}`
+        }
+        //console.log("Player: " + playerSelection + "\nComputer: " + computerSelection);
+    }); 
+}
+
+
+/* function game () {
     let playerWins = 0;
     let computerWins = 0;
     for (let i = 0; i < 5; i++) {
@@ -61,9 +95,9 @@ function game () {
             console.log("It's a Draw! Both players chose " + playerSelection);
         }
     }
-    console.log(`\nThe winner of the game is: ${(playerWins > computerWins) ? "You!" : 
+    console.log(`\nThe winner of the game is: ${(playerWins > computerWins) ? "You!" :
                                                (computerWins > playerWins) ? "The computer!" :
                                                 "There is no winner!"}`)
-}
+} */
 
-game();
+// game();
