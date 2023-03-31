@@ -1,12 +1,15 @@
 body {
   font-family: 'Courier New', Courier, monospace;
   color: #5e5e5e;
+  background: linear-gradient(to right, #bbbbbb, white);
+
 }
 
 header {
   text-align: center;
   font-size: 22px;
   color: #5e5e5e;
+  
 }
 
 h2 {
