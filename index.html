@@ -1,18 +1,42 @@
 <!DOCTYPE html>
-<html>
-    <head>
-        
-    </head>
-    <body>
-        <button id="rock">Rock</button>
-        <button id="paper">Paper</button>
-        <button id ="scissors">Scissors</button>
-        <div id="result">
-            <p></p>
-            <p></p>
-            <p></p>
-            <p id="game-result"></p>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Rock Paper Scissors</title>
+    <link rel="stylesheet" href="styles.css" />
+    <script src="script.js" defer></script>
+  </head>
+  <body>
+    <header class="header">
+      <h1>
+        <span>ROCK</span>
+        <span>PAPER</span>
+        <span>SCISSORS</span>
+      </h1>
+      <p>3 Items | 5 Lives | 2 Players</p>
+      <p>Rock beats Scissors | Paper beats Rock | Scissors beats Paper</p>
+    </header>
+    <main class="main-content">
+      <div class="symbols">
+        <button class="rock item-button"><img src="images/rock.png" alt="Rock"></button>
+        <button class="paper item-button"><img src="images/paper.png" alt="Paper"></button>
+        <button class="scissors item-button"><img src="images/scissors.png" alt="Scissors"></button>
+      </div>
+
+      <div class="result-content">
+        <div class="game-rounds">
+          <ul class="player-list">
+            <li class="top">Player</li>
+          </ul>
+          <ul class="computer-list">
+            <li class="top">Computer</li>          
+          </ul>
         </div>
-    </body>
-    <script src="script.js"></script>
+        
+        <h2 id="game-result"></h2>
+        <button class="reset-button">Restart Game</button>
+      </div>
+    </main>
+  </body>
 </html>

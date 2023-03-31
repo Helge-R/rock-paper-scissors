@@ -1,103 +1,111 @@
 function getComputerChoice() {
-    let random = Math.random();
+  let random = Math.random();
 
-    if (random > 0.66) {
-        return "Scissors";
-    } else if (random > 0.33) {
-        return "Paper";
-    }
+  if (random > 0.66) {
+    return "Scissors";
+  } else if (random > 0.33) {
+    return "Paper";
+  }
 
-    return "Rock";
+  return "Rock";
 }
 
 function playRound(playerSelection, computerSelection) {
+  playerSelection =
+    playerSelection.slice(0, 1).toUpperCase() +
+    playerSelection.toLowerCase().slice(1);
+  computerSelection =
+    computerSelection.slice(0, 1).toUpperCase() +
+    computerSelection.toLowerCase().slice(1);
+  let winner = "player";
 
-    playerSelection = playerSelection.slice(0, 1).toUpperCase() + playerSelection.toLowerCase().slice(1);
-    computerSelection = computerSelection.slice(0, 1).toUpperCase() + computerSelection.toLowerCase().slice(1);
-    let winner = "player";
+  switch (playerSelection) {
+    case "Rock":
+      if (computerSelection === "Paper") {
+        winner = "computer";
+      } else if (computerSelection === "Rock") {
+        winner = "draw";
+      }
+      break;
+    case "Paper":
+      if (computerSelection == "Scissors") {
+        winner = "computer";
+      } else if (computerSelection === "Paper") {
+        winner = "draw";
+      }
+      break;
+    case "Scissors":
+      if (computerSelection === "Rock") {
+        winner = "computer";
+      } else if (computerSelection === "Scissors") {
+        winner = "draw";
+      }
+      break;
+    default:
+      winner = "computer";
+  }
 
-    switch (playerSelection) {
-        case "Rock":
-            if (computerSelection === "Paper") {
-                winner = "computer";
-            } else if (computerSelection === "Rock") {
-                winner = "draw";
-            }
-            break;
-        case "Paper":
-            if (computerSelection == "Scissors") {
-                winner = "computer";
-            } else if (computerSelection === "Paper") {
-                winner = "draw";
-            }
-            break;
-        case "Scissors":
-            if (computerSelection === "Rock") {
-                winner = "computer";
-            } else if (computerSelection === "Scissors") {
-                winner = "draw";
-            }
-            break;
-        default: winner ="computer";
-    }
-
-    return winner;
+  return winner;
 }
 
-let buttons = document.querySelectorAll('button');
-let results = document.querySelector('#result');
-let messages = document.querySelectorAll('#result > p');
-let gameResult = document.querySelector('#game-result');
+let buttons = document.querySelectorAll("button.item-button");
+let restartBtn = document.querySelector(".reset-button")
+let results = document.querySelector(".result-content");
+let playerList = document.querySelector(".player-list");
+let computerList = document.querySelector(".computer-list");
+let gameResult = document.querySelector("#game-result");
 let playerWins = 0;
 let computerWins = 0;
+let gameFinished = false;
 
 for (btn of Array.from(buttons)) {
+  btn.addEventListener("click", (e) => {
+    if (gameFinished) return;
+    let playerSelection = e.target.parentElement.classList[0][0].toUpperCase() + e.target.parentElement.classList[0].slice(1);
+    console.log(playerSelection);
+    let computerSelection = getComputerChoice();
+    let winner = playRound(playerSelection, computerSelection);
+    winner = winner[0].toUpperCase() + winner.slice(1);
+
+    let playerChoice = document.createElement('li');
+    let computerChoice = document.createElement('li');
+
+    playerList.appendChild(playerChoice).textContent = playerSelection;
+    computerList.appendChild(computerChoice).textContent = computerSelection;
+
     
-    btn.addEventListener('click', (e) => {
-        let playerSelection = e.target.textContent;
-        let computerSelection = getComputerChoice();
-        let winner = playRound(playerSelection, computerSelection);
-        winner = winner[0].toUpperCase() + winner.slice(1);
-        messages[0].textContent = "Player: " + playerSelection;
-        messages[1].textContent = "Computer: " + computerSelection;
-        messages[2].textContent = "Winner: " + winner;
 
-        if (winner === "Player") {
-            playerWins++;
-        } else if (winner === "Computer") {
-            computerWins++;
-        }
+    if (winner === "Player") {
+      playerWins++;
+    } else if (winner === "Computer") {
+      computerWins++;
+    }
 
-        if (playerWins === 5 || computerWins === 5) {
-            gameResult.textContent = `The winner of the game is: ${(playerWins > computerWins) ? "You!" :
-            (computerWins > playerWins) ? "The computer!" :
-             "There is no winner!"}`
-        }
-        //console.log("Player: " + playerSelection + "\nComputer: " + computerSelection);
-    }); 
+    if (playerWins === 5 || computerWins === 5) {
+      gameFinished = true;
+      gameResult.textContent = `The winner of the game is: ${
+        playerWins > computerWins
+          ? "You!"
+          : computerWins > playerWins
+          ? "The computer!"
+          : "There is no winner!"
+      }`;
+    }
+    //console.log("Player: " + playerSelection + "\nComputer: " + computerSelection);
+  });
 }
 
 
-/* function game () {
-    let playerWins = 0;
-    let computerWins = 0;
-    for (let i = 0; i < 5; i++) {
-        let playerSelection = prompt("What do you choose? ", "");
-        let computerSelection = getComputerChoice();
-        let winner = playRound(playerSelection, computerSelection);
-        if (winner === "player") {
-            playerWins++;
-            console.log("You Win! " + playerSelection + " beats " + computerSelection);
-        } else if (winner === "computer") {
-            computerWins++;
-            console.log("You lose! " + computerSelection + " beats " + playerSelection);
-        } else {
-            console.log("It's a Draw! Both players chose " + playerSelection);
-        }
-    }
-    console.log(`\nThe winner of the game is: ${(playerWins > computerWins) ? "You!" :
-                                               (computerWins > playerWins) ? "The computer!" :
-                                                "There is no winner!"}`)
-} */
+restartBtn.addEventListener('click', (e) => {
+  playerWins = 0;
+  computerWins = 0;
+  gameFinished = false;
+  gameResult.textContent = "";
+  while (playerList.childElementCount > 1) {
+    playerList.removeChild(playerList.lastChild);
+  }
 
-// game();
+  while (computerList.childElementCount > 1) {
+    computerList.removeChild(computerList.lastChild);
+  }
+});
